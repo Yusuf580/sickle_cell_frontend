@@ -56,7 +56,6 @@ function ScanOverlay() {
 export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
   const [mode, setMode] = useState<"upload" | "camera">("upload");
   const [preview, setPreview] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [loadingStep, setLoadingStep] = useState(0);
@@ -114,7 +113,6 @@ export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
     canvas.toBlob(blob => {
       if (!blob) return;
       const capturedFile = new File([blob], "capture.jpg", { type: "image/jpeg" });
-      setFile(capturedFile);
       setPreview(canvas.toDataURL("image/jpeg"));
       stopCamera();
     }, "image/jpeg", 0.92);
@@ -125,7 +123,6 @@ export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
     setDragOver(false);
     const dropped = e.dataTransfer.files[0];
     if (dropped && dropped.type.startsWith("image/")) {
-      setFile(dropped);
       setPreview(URL.createObjectURL(dropped));
     }
   }, []);
@@ -133,7 +130,6 @@ export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) {
-      setFile(selected);
       setPreview(URL.createObjectURL(selected));
     }
   };
@@ -231,7 +227,7 @@ export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
             <img src={preview} alt="Preview" className="w-full max-h-80 object-contain bg-black/40" />
             <ScanOverlay />
             <button
-              onClick={() => { setPreview(null); setFile(null); }}
+              onClick={() => { setPreview(null);  }}
               className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-black/70 text-white flex items-center justify-center"
             >
               ✕
