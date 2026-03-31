@@ -112,7 +112,6 @@ export default function UploadPage({ onAnalyse, isLoading, apiError }: Props) {
 
     canvas.toBlob(blob => {
       if (!blob) return;
-      const capturedFile = new File([blob], "capture.jpg", { type: "image/jpeg" });
       setPreview(canvas.toDataURL("image/jpeg"));
       stopCamera();
     }, "image/jpeg", 0.92);
