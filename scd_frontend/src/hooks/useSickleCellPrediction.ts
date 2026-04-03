@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react";
 import type { PredictionResult } from "../types";
 
-const SPACE_URL = "https://ultrainstinct12-sickle-cell-backend1.hf.space";
+const SPACE_URL = "https://sickle-cell-backend.onrender.com";
 
 export function useSicklePrediction() {
   const [loading, setLoading] = useState(false);
