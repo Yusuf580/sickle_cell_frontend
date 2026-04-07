@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { PredictionResult } from "../types";
 import {
   Microscope, ArrowLeft, Upload, CheckCircle2, AlertTriangle,
-  Map, BarChart3, Stethoscope, Info, ChevronRight, RefreshCw
+  Map, BarChart3, Stethoscope, Info, RefreshCw
 } from "lucide-react";
 
 interface Props {
