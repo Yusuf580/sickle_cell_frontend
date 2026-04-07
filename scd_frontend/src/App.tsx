@@ -1,24 +1,59 @@
-import { useSicklePrediction } from "./hooks/useSickleCellPrediction";
-import ResultsPage from "./pages/ResultsPage";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 import UploadPage from "./pages/UploadPage";
+import ResultsPage from "./pages/ResultsPage";
+import { useSicklePrediction } from "./hooks/useSickleCellPrediction";
 
-
-export default function SickleApp() {
+function AppRoutes() {
+  const navigate = useNavigate();
   const { predict, result, loading, error, reset } = useSicklePrediction();
 
-  const handleAnalyse = async (base64: string) => {
-    await predict(base64);
+  const handleAnalyse = async (input: string) => {
+    await predict(input);
+    navigate("/results");
   };
 
-  if (result) {
-    return <ResultsPage result={result} onReset={reset} />;
-  }
+  const handleReset = () => {
+    reset();
+    navigate("/upload");
+  };
 
   return (
-    <UploadPage 
-      onAnalyse={handleAnalyse} 
-      isLoading={loading} 
-      apiError={error} 
-    />
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route
+        path="/upload"
+        element={
+          <UploadPage
+            onAnalyse={handleAnalyse}
+            isLoading={loading}
+            apiError={error}
+          />
+        }
+      />
+      <Route
+        path="/results"
+        element={
+          result ? (
+            <ResultsPage result={result} onReset={handleReset} />
+          ) : (
+            // If no result (e.g. direct navigation), redirect to upload
+            <UploadPage
+              onAnalyse={handleAnalyse}
+              isLoading={loading}
+              apiError={error}
+            />
+          )
+        }
+      />
+    </Routes>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
